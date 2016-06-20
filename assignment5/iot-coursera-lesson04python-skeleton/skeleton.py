@@ -49,28 +49,40 @@ def getPixelMap(color, number): #not working for negative numbers
 
 client = None
 
+# Keep track of current led bg color
+currBgColor = "black"
+
 def myCommandCallback(cmd):
     if cmd.command == "display":
         command = cmd.data['screen']
         if command == "on":
             # TODO insert your code here
+	    # print('command on')
+            global currBgColor
+	    currBgColor="red"
+	    sense.set_pixels(getPixelMap("red", sense.get_temperature()))
             pass
         elif command == "off":
-            # TODO insert your code here
+            # TODO insert your code herei
+	    # print('command off')
+            global currBgColor
+	    currBgColor="green"
+	    sense.set_pixels(getPixelMap("green", sense.get_temperature()))
             pass
 
 try:
-    gatewayOptions = {"org": "yourOrg", "type": "yourGatewayType", "id": "yourGatewayId", "auth-method": "token", "auth-token": "yourAuthToken"}
+    gatewayOptions = {"org": "uyvo1m", "type": "raspiGateway", "id": "be27ebc08e03", "auth-method": "token", "auth-token": "asdf1234"}
     gatewayCli = ibmiotf.gateway.Client(gatewayOptions)
 
     gatewayCli.connect()
     gatewayCli.deviceCommandCallback = myCommandCallback 
-    gatewayCli.subscribeToDeviceCommands(deviceType='yourDeviceType', deviceId='yourDeviceId', command='display',format='json',qos=2)
+    gatewayCli.subscribeToDeviceCommands(deviceType='raspiGateway', deviceId='be27ebc08e03', command='display',format='json',qos=2)
 
     while True:
-        temp = 0 # TODO insert your code here
-        myData = {} # TODO insert your code here
-        gatewayCli.publishDeviceEvent("yourDeviceType", "yourDeviceId", "yourEventName", "json", myData, qos=1 )
+        temp = sense.get_temperature() # TODO insert your code here
+        myData = {"d": { "temperature" : temp} } # TODO insert your code here
+	sense.set_pixels(getPixelMap(currBgColor, sense.get_temperature()))
+        gatewayCli.publishDeviceEvent("senseHat", "senbe27ebc08e03", "yourEventName", "json", myData, qos=1 )
         time.sleep(2)
 
 except ibmiotf.ConnectionException  as e:
