@@ -3,6 +3,8 @@ applications:
   memory: 256M
   instances: 1
   domain: mybluemix.net
-  name: YOUR-APP-NAME
-  host: YOUR-APP-NAME
+  name: erk-nodeserver2
+  host: erk-nodeserver2
   disk_quota: 1024M
+services:
+- EricAssignment1-iotf-service
