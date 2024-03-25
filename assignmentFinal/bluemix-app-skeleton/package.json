@@ -7,7 +7,7 @@
   "license": "ISC",
   "dependencies": {
     "cfenv": "1.0.3",
-    "express": "4.13.4",
+    "express": "4.19.2",
     "ibmiotf": "0.2.11"
   }
 }
